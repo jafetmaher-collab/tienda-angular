@@ -1,0 +1,150 @@
+
+<div class="panel">
+
+  <h1>Operaciones CRUD</h1>
+
+  <div class="contenido">
+
+    <!-- FORMULARIO -->
+
+    <div class="formulario">
+
+      <h2>
+        {{ editingId() === null ? 'Nuevo producto' : 'Editar producto' }}
+      </h2>
+
+      <form (ngSubmit)="save()">
+
+        <label for="title">Título</label>
+        <input
+          id="title"
+          name="title"
+          [(ngModel)]="form.title"
+          required
+        >
+
+        <label for="price">Precio</label>
+        <input
+          id="price"
+          name="price"
+          type="number"
+          min="0.01"
+          step="0.01"
+          [(ngModel)]="form.price"
+          required
+        >
+
+        <label for="category">Categoría</label>
+        <select
+          id="category"
+          name="category"
+          [(ngModel)]="form.category"
+          required
+        >
+          <option value="">Selecciona una categoría</option>
+
+          @for (categoria of categorias(); track categoria) {
+            <option [value]="categoria">
+              {{ categoria }}
+            </option>
+          }
+
+        </select>
+
+        <label for="image">URL de la imagen</label>
+        <input
+          id="image"
+          name="image"
+          type="url"
+          [(ngModel)]="form.image"
+          required
+        >
+
+        <label for="description">Descripción</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="3"
+          [(ngModel)]="form.description"
+        ></textarea>
+
+        <button type="submit">
+          Guardar
+        </button>
+
+        @if (editingId() !== null) {
+          <button type="button" (click)="cancel()">
+            Cancelar
+          </button>
+        }
+
+      </form>
+
+    </div>
+
+    <!-- TABLA DE PRODUCTOS -->
+
+    <div class="tabla">
+
+      <h2>Lista de productos</h2>
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Producto</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (producto of productos(); track producto.id) {
+
+            <tr>
+
+              <td>
+                <img
+                  [src]="producto.image"
+                  [alt]="producto.title"
+                >
+              </td>
+
+              <td>{{ producto.title }}</td>
+
+              <td>{{ producto.category }}</td>
+
+              <td>${{ producto.price }}</td>
+
+              <td class="acciones">
+
+                <button
+                  type="button"
+                  (click)="edit(producto)">
+                  Editar
+                </button>
+
+                <button
+                  type="button"
+                  (click)="borrarProducto(producto.id)">
+                  Eliminar
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
